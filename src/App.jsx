@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid"
 import { useState } from "react"
 import Die from "./components/Die"
 
@@ -7,7 +8,11 @@ function App() {
 
     for (let i=0; i < 10; i++){
       const randomNum = Math.ceil(Math.random() * 6)
-      newDice.push(randomNum)
+      newDice.push({
+        value: randomNum,
+        isheld: false,
+        id: nanoid()
+      })
     }
     
     return newDice
@@ -15,7 +20,9 @@ function App() {
 
   const [allDice, setAllDice] = useState(allNewDice())
 
-  const diceElements = allDice.map(die => <Die value={die} />)
+  const diceElements = allDice.map(die => <Die key={die.id} value={die.value} />)
+  
+  const rollDice = () => setAllDice(allNewDice())
 
   return (
     <div className="App">
@@ -29,7 +36,7 @@ function App() {
             {diceElements}
           </div>
           <section className="Roll flex justify-center">
-            <div className="roll-button bg-cyan-700 w-24 h-12 flex justify-center items-center text-lg text-slate-100 rounded-xl drop-shadow-md">Roll</div>
+            <button onClick={rollDice} className="roll-button bg-cyan-700 w-24 h-12 flex justify-center items-center text-lg text-slate-100 rounded-xl drop-shadow-md active:shadow-inner hover:bg-cyan-900">Roll</button>
           </section>
         </div>
       </div>
