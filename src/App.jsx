@@ -48,12 +48,17 @@ function App() {
   }
   
   function rollDice() {
-    setAllDice(prevDice => prevDice.map(die => (
+    if(tenzies){
+      setAllDice(allNewDice())
+      setTenzies(false);
+    } else {
+      setAllDice(prevDice => prevDice.map(die => (
         die.isHeld ?
           die :
           generateNewDice()
-      ))
-    )
+        ))
+      )
+    }
   }
 
   function holdDice(id) {
@@ -61,21 +66,17 @@ function App() {
         die.id === id ? 
           {...die, isHeld: !die.isHeld} 
           : die
-      )))
+    )))
   }
 
   const diceElements = allDice.map(die => (
-      <Die 
-        key={die.id} 
-        value={die.value} 
-        isHeld={die.isHeld} 
-        holdDice={() => holdDice(die.id)} 
-      />
+    <Die 
+      key={die.id} 
+      value={die.value} 
+      isHeld={die.isHeld} 
+      holdDice={() => holdDice(die.id)} 
+    />
   ))
-
-  function newGame() {
-    
-  }
   
   return (
     <div className="App">
