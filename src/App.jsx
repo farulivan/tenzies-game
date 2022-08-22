@@ -1,9 +1,33 @@
 import { nanoid } from "nanoid"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useWindowSize } from "rooks"
+import Confetti from "react-confetti"
 import Die from "./components/Die"
 
 function App() {
   const [allDice, setAllDice] = useState(allNewDice())
+  const [tenzies, setTenzies] = useState(false)
+  const { width, height } = useWindowSize()
+
+  // ---- Bob Ziroll Solution
+  // React.useEffect(() => {
+  //   const allHeld = dice.every(die => die.isHeld)
+  //   const firstValue = dice[0].value
+  //   const allSameValue = dice.every(die => die.value === firstValue)
+  //   if (allHeld && allSameValue) {
+  //       setTenzies(true)
+  //       console.log("You won!")
+  //   }
+  // }, [dice])  
+
+  // ---- My Solution using Set objects ES6+
+  useEffect(() => {
+    const cond1 = new Set(allDice.map(dice => dice.value)).size === 1; 
+    const cond2 = new Set(allDice.map(dice => dice.isHeld)).size === 1;
+    if(cond1 && cond2) {
+      setTenzies(true)
+    } 
+  },[allDice])
 
   function generateNewDice() {
     return {
@@ -48,6 +72,10 @@ function App() {
         holdDice={() => holdDice(die.id)} 
       />
   ))
+
+  function newGame() {
+    
+  }
   
   return (
     <div className="App">
@@ -61,8 +89,12 @@ function App() {
             {diceElements}
           </div>
           <section className="Roll flex justify-center">
-            <button onClick={rollDice} className="roll-button bg-cyan-700 w-24 h-12 flex justify-center items-center text-lg text-slate-100 rounded-xl drop-shadow-md active:shadow-inner hover:bg-cyan-900">Roll</button>
+            <button onClick={rollDice} className="roll-button bg-cyan-700 px-12 h-12 flex justify-center items-center text-lg text-slate-100 rounded-xl drop-shadow-md active:shadow-inner hover:bg-cyan-900">{tenzies ? 'New Game' : 'Roll'}</button>
           </section>
+          {tenzies && <Confetti
+            width={width}
+            height={height}
+          />}
         </div>
       </div>
     </div>
