@@ -86,7 +86,7 @@ function App() {
             <h1 className="text-2xl">Tenzies</h1>
             <p className="font-inter text-sm px-5 my-1">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
           </div>
-          <div className="die-container grid grid-cols-5 my-5 gap-4 md:gap-7 p-2 text-center">
+          <div className="die-container grid grid-cols-5 my-5 gap-4 p-6 md:gap-7 md:p-2 text-center">
             {diceElements}
           </div>
           <section className="Roll flex justify-center">
